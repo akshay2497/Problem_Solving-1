@@ -1,0 +1,106 @@
+Problem Description
+
+Given an integer A, generate a square matrix filled with elements from 1 to A2 in spiral order.
+
+
+
+Problem Constraints
+
+1 <= A <= 1000
+
+
+
+Input Format
+
+First and only argument is integer A
+
+
+Output Format
+
+Return a 2-D matrix which consists of the elements in spiral order.
+
+
+
+Example Input
+
+Input 1:
+
+1
+Input 2:
+
+2
+
+
+Example Output
+
+Output 1:
+
+[ [1] ]
+Output 2:
+
+[ [1, 2], [4, 3] ]
+
+
+Example Explanation
+
+Explanation 1:
+
+ 
+Only 1 is to be arranged.
+Explanation 2:
+
+1 --> 2
+      |
+      |
+4<--- 3
+
+
+//Soln - java 8
+
+
+public class Solution {
+    public int[][] generateMatrix(int A) {
+        //Create new matrix of size A*A
+        int[][] mat = new int[A][A];
+        //Place 4 variable at four corners of matrix
+        int left = 0, right = A-1, top = 0, bottom = A-1;
+        //val variable help us to add elements in our matrix
+        int val = 1;
+
+        //Run the while loop till val < A^2
+        while(val <= A*A){
+            //First for loop will go from left till right 
+            //add values at topmost row
+            for(int i = left; i <= right; i++){
+                //Row fixed col is moving i.e. i var
+                mat[top][i] = val++;
+            }
+            //Second for loop will go from top+1 till bottom 
+            //add values at rightmost row
+            for(int i = top+1; i <= bottom; i++){
+                //Col fixed row is moving i.e. i var
+                mat[i][right] = val++;
+            }
+            //Third for loop will go from right+1 till left 
+            //add values at bottommost row
+            for(int i = right - 1; i >= left; i--){
+                //Row fixed col is moving i.e. i var
+                mat[bottom][i] = val++;
+            }
+            //Fourth for loop will go from bottom-1 till left+1 
+            //add values at leftmost row
+            for(int i = bottom - 1; i > left; i--){
+                //Col fixed row is moving i.e. i var
+                mat[i][left] = val++;
+            }
+            //When all loops rotated once then change the corner values
+            left++;
+            right--;
+            top++;
+            bottom--;
+        }
+        //Finally Return the matrix
+        //TC = O(A^2) || SC = O(N^2)
+        return mat;
+    }
+}

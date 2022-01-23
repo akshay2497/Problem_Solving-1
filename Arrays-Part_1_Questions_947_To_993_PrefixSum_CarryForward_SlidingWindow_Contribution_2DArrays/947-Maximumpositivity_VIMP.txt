@@ -1,0 +1,114 @@
+**Problem Description**
+
+Given an array of integers A, of size N.
+
+Return the maximum size subarray of A having only non-negative elements. If there are more than one such subarrays, return the one having the earliest starting index in A.
+
+NOTE: It is guaranteed that an answer always exists.
+
+
+
+**Problem Constraints**
+
+1 <= N <= 105
+
+-109 <= A[i] <= 109
+
+
+
+**Input Format**
+
+The first and only argument given is the integer array A.
+
+
+
+**Output Format**
+
+Return maximum size subarray of A having only non-negative elements. If there are more than one such subarrays, return the one having earliest starting index in A.
+
+
+
+**Example Input**
+
+Input 1:
+
+ A = [5, 6, -1, 7, 8]
+Input 2:
+
+ A = [1, 2, 3, 4, 5, 6]
+
+
+**Example Output**
+
+Output 1:
+
+ [5, 6]
+Output 2:
+
+ [1, 2, 3, 4, 5, 6]
+
+
+**Example Explanation**
+
+Explanation 1:
+
+ There are two subarrays of size 2 having only non-negative elements.
+ 1. [5, 6]  starting point  = 0
+ 2. [7, 8]  starting point  = 3
+ As starting point of 1 is smaller, return [5, 6]
+Explanation 2:
+
+ There is only one subarray of size 6 having only non-negative elements:
+ [1, 2, 3, 4, 5, 6]
+
+
+//Soln - java 8
+
+
+public class Solution {
+    public ArrayList<Integer> solve(ArrayList<Integer> A) {
+        //Create a arraylist to return max positive list
+        ArrayList<Integer> ans = new ArrayList<>();
+        //To get the max size positive subarray first we need to know its length and 
+        //Starting and ending index
+        //Declare three variables to find maxsize and endindex
+        int maxsize = 0, tempsize = 0, endindex = -1;
+        int i = 0;
+        //Run a while loop til i < N
+        while(i < A.size()){
+            //If element is >= 0 the increse tempsize by one
+            if(A.get(i) >= 0)
+                tempsize++;
+            else{
+                //In elese block check if current maxsize is less than tempsize 
+                if(maxsize < tempsize){
+                    //If yes then update maxsize and set endindex to current value of i. 
+                    maxsize = tempsize;
+                    endindex = i;
+                }
+                //reset tempsize to 0 so that it can count size of next positive subarray 
+                tempsize = 0;
+            }
+            //Increment i
+            i++;
+            
+        }
+
+        //Edgecase :- if last subarry is max positive subarray so it will not update the 
+        //Vlue of maxsize and index so check the same condition as before here 
+        if(maxsize < tempsize){
+            maxsize = tempsize;
+            endindex = i;
+        }
+        //Using endindex and maxsize find startindex
+        int startindex = endindex - maxsize;
+        //Run a loop from startindex to endindex and add elements to the list
+        for(int j = startindex; j < endindex; j++){
+            ans.add(A.get(j));
+        }
+        //return the list
+        return ans;
+
+        //TC = O(N) || SC = O(N)
+    }
+}

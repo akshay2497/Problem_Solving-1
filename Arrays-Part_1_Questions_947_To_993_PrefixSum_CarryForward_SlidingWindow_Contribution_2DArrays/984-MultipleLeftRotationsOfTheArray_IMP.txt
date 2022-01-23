@@ -1,0 +1,104 @@
+Problem Description
+
+Given an array of integers A and multiple values in B which represents number of times array A needs to be left rotated.
+
+Find the rotated array for each value and return the result in the from of a matrix where i'th row represents the rotated array for the i'th value in B.
+
+
+
+Problem Constraints
+
+1 <= length of both arrays <= 2000 -10^9 <= A[i] <= 10^9 0 <= B[i] <= 2000
+
+
+Input Format
+
+The first argument given is the integer array A.
+The second argument given is the integer array B.
+
+
+Output Format
+
+Return the resultant matrix.
+
+
+Example Input
+
+Input 1:
+ 
+    A = [1, 2, 3, 4, 5]
+    B = [2, 3]
+
+Input 2:
+
+  
+    A = [5, 17, 100, 11]
+    B = [1]
+
+
+
+
+Example Output
+
+Output 1:
+ 
+    [ [3, 4, 5, 1, 2]
+     [4, 5, 1, 2, 3] ]
+
+
+Output 2:
+
+    
+    [ [17, 100, 11, 5] ]
+
+
+
+Example Explanation
+
+for input 1 -> B[0] = 2 which requires 2 times left rotations
+
+1: [2, 3, 4, 5, 1]
+
+2: [3, 4, 5, 1, 2]
+
+B[1] = 3 which requires 3 times left rotation
+
+1: [2, 3, 4, 5, 1]
+
+2: [3, 4, 5, 1, 2]
+
+2: [4, 5, 1, 2, 4]
+
+//Soln - java 8
+
+public class Solution {
+    public int[][] solve(int[] A, int[] B) {
+        int[][] matrix = new int[B.length][];
+        //Reverse whole array
+        Solution.reverse(A, A.length-1, 0);
+        for(int x = 0; x < B.length; ++x){
+            //Cloning the array
+            int[] Z = A.clone();
+            //If count of rotations K are more than length of array 
+            //then we wiil get ArrayIndexOutOfBound Exception to avid that we will
+            //reverse array till K % A.length times
+            int K = B[x]%A.length;
+            //reverse last part
+            Solution.reverse(Z, Z.length - 1, Z.length - K);
+            //reverse first part
+            Solution.reverse(Z, Z.length - K - 1, 0);
+            //Add reference to the matrix
+            matrix[x] = Z;
+        }
+        return matrix;
+    }
+    public static void reverse(int[] arr, int i, int j){
+        while(i > j){
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i--;
+            j++;
+        }
+    }
+}

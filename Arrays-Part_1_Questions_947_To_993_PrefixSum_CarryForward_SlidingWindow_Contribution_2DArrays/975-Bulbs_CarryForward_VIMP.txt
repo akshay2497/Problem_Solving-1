@@ -1,0 +1,115 @@
+Problem Description
+
+N light bulbs are connected by a wire.
+
+Each bulb has a switch associated with it, however due to faulty wiring, a switch also changes the state of all the bulbs to the right of current bulb.
+
+Given an initial state of all bulbs, find the minimum number of switches you have to press to turn on all the bulbs.
+
+You can press the same switch multiple times.
+
+Note: 0 represents the bulb is off and 1 represents the bulb is on.
+
+
+
+Problem Constraints
+
+1 <= N <= 5*105
+0 <= A[i] <= 1
+
+
+
+Input Format
+
+The first and the only argument contains an integer array A, of size N.
+
+
+
+Output Format
+
+Return an integer representing the minimum number of switches required.
+
+
+
+Example Input
+
+Input 1:
+
+ A = [0, 1, 0, 1]
+Input 2:
+
+ A = [1, 1, 1, 1]
+
+
+Example Output
+
+Output 1:
+
+ 4
+Output 2:
+
+ 0
+
+
+Example Explanation
+
+Explanation 1:
+
+ press switch 0 : [1 0 1 0]
+ press switch 1 : [1 1 0 1]
+ press switch 2 : [1 1 1 0]
+ press switch 3 : [1 1 1 1]
+Explanation 2:
+
+ There is no need to turn any switches as all the bulbs are already on.
+
+//Soln - java 8
+
+public class Solution {
+    public int bulbs(int[] A) {
+        /*
+        *   Approach 1: 
+        *       1. By observation we know that if a button pressed value is even the next buttons 
+                   Will be in their original state otherwise they will be in toggeled state
+                2. Using this logic we can calculate the current state of that bulbs
+                3. And increase the count of buttons pressed
+                TC = O(N) SC = O(1)
+        
+        int switch_pressed = 0;
+        for(int i = 0; i < A.length; i++){
+            int curr_val;
+            if(switch_pressed % 2 == 0){
+                curr_val = A[i];
+            }else{
+                curr_val = 1 - A[i];
+            }
+            if(curr_val == 0){
+                switch_pressed++;
+            }
+        }
+        return switch_pressed;
+        */
+
+        /*
+        * Approach 2 :-
+                    1. Create two variables look_for and count_sp
+                    2. look_for will look for element where we want to turn on the bulbs
+                    3. And count_sp will contain the count of buttons pressed
+                    4. For ex. Given array is [1, 0, 0, 1, 0, 1, 1]
+                    5. then in the the first iteration we will look for 0 to turn it on
+                    6. if we find 0 then we will increase the count by one and as we know
+                       all next bulbs are toggeled so now we will look for 1 and this process 
+                       goes on
+                    7. Finally return the count value
+                    TC = O(N), SC = O(1)
+        */
+        int look_for = 0, count_sp = 0;
+        for(int i = 0; i < A.length; i++){
+            if(A[i] == look_for){
+                count_sp++;
+                look_for = 1 - A[i];
+            }
+        }
+        return count_sp;
+    }
+}

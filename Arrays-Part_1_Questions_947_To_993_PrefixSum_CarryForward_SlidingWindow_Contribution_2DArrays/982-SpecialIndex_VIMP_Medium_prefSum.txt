@@ -1,0 +1,116 @@
+***Count ways to make sum of odd and even indexed elements equal by removing an array element
+
+Problem Description
+
+Given an array, arr[] of size N, the task is to find the count of array indices such that removing an element from these indices makes the sum of even-indexed and odd-indexed array elements equal.
+
+
+
+Problem Constraints
+
+1<=n<=1e5
+-1e5<=A[i]<=1e5
+
+
+Input Format
+
+First argument contains an array A of integers of size N
+
+
+Output Format
+
+Return the count of array indices such that removing an element from these indices makes the sum of even-indexed and odd-indexed array elements equal.
+
+
+
+Example Input
+
+Input 1:
+A=[2, 1, 6, 4]
+Input 2:
+
+A=[1, 1, 1]
+
+
+Example Output
+
+Output 1:
+1
+Output 2:
+
+3
+
+
+Example Explanation
+
+Explanation 1:
+Removing arr[1] from the array modifies arr[] to { 2, 6, 4 } such that, arr[0] + arr[2] = arr[1]. 
+Therefore, the required output is 1. 
+Explanation 2:
+
+ Removing arr[0] from the given array modifies arr[] to { 1, 1 } such that arr[0] = arr[1] 
+Removing arr[1] from the given array modifies arr[] to { 1, 1 } such that arr[0] = arr[1] 
+Removing arr[2] from the given array modifies arr[] to { 1, 1 } such that arr[0] = arr[1] 
+Therefore, the required output is 3.
+
+//Soln - java 8
+
+public class Solution {
+    public int solve(int[] A) {
+        //Step 1 :  Create prefix even and odd array
+        //          i.e. for pfeven we will ignore all the odd elements of array and put the sum 
+        //          previous even index at that place and for pfodd vice versa
+        int[] pfeven = new int[A.length];
+        int[] pfodd = new int[A.length];
+        //create pfeven array
+        // TC = O(N), SC = O(N)
+        pfeven[0] = A[0];
+        for(int i = 1; i < pfeven.length; i++){
+            if(i % 2 == 0)
+                pfeven[i] = pfeven[i - 1] + A[i];
+            else
+                pfeven[i] = pfeven[i - 1];
+        } 
+        //Create pfodd array
+        // TC = O(N), SC = O(N)
+        pfodd[0] = 0;
+        for(int i = 1; i < pfodd.length; i++){
+            if(i % 2 != 0)
+                pfodd[i] = pfodd[i - 1] + A[i];
+            else
+                pfodd[i] = pfodd[i - 1];
+        }
+        // for(int ele : pfeven)
+        //     System.out.print(ele+", ");
+        // System.out.println();
+        // for(int ele : pfodd)
+        //     System.out.print(ele+", ");
+        // return -1;
+
+        /*
+        * Step 2:   Traverse over array A
+        *        1.  If we remove an element from array the observation is all odd indexed elements
+        *            after that index become even index elements and vice versa with even indexed ele's.
+        *        2.  And sum of total even elements will become,
+        *            Total evensum[0 i] = sumeven[0 i-1] + sumodd[i+1 n-1]
+        *        3.  And Sum of total odd elements will become,
+        *            Total oddsum[0 i] = oddsum[0 i-1] + evensum[i+1 n-1]
+        *        4.  Edge case will be: If i == 0 then
+        *            Total evensum[0 i] = sumeven[i-1] + sumodd[i+1 n-1] and
+        *            Total oddsum[0 i] = oddsum[i-1] + evensum[i+1 n-1]
+        *        5.  Then we will check if,
+        *            Total evensum == Total oddsum and increase the count
+        */
+        // TC = O(N), SC = O(1)
+        int count = 0, N = A.length;
+        for(int i = 0; i < N; i++){
+            int evensum = (i == 0 ? 0 : pfeven[i - 1]) + (pfodd[N - 1] - pfodd[i]);
+            int oddsum = (i == 0 ? 0: pfodd[i - 1]) + (pfeven[N -1] - pfeven[i]);
+            if(evensum == oddsum)
+                count++;
+        }
+        return count;
+
+        // Total TC = O(N+N+N) =O(N), SC =O(N+N+1) = O(N)
+    }
+}

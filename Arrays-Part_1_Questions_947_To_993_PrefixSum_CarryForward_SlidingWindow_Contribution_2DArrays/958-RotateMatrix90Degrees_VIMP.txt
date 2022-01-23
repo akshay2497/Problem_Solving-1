@@ -1,0 +1,101 @@
+Problem Description
+
+You are given a n x n 2D matrix A representing an image.
+
+Rotate the image by 90 degrees (clockwise).
+
+You need to do this in place.
+
+Note: If you end up using an additional array, you will only receive partial score.
+
+
+
+Problem Constraints
+
+1 <= n <= 1000
+
+
+
+Input Format
+
+First argument is a 2D matrix A of integers
+
+
+
+Output Format
+
+Return the 2D rotated matrix.
+
+
+
+Example Input
+
+Input 1:
+
+ [
+    [1, 2],
+    [3, 4]
+ ]
+Input 2:
+
+ [
+    [1]
+ ]
+
+
+Example Output
+
+Output 1:
+
+ [
+    [3, 1],
+    [4, 2]
+ ]
+Output 2:
+
+ [
+    [1]
+ ]
+
+
+Example Explanation
+
+Explanation 1:
+
+ After rotating the matrix by 90 degree:
+ 1 goes to 2, 2 goes to 4
+ 4 goes to 3, 3 goes to 1
+Explanation 2:
+
+ 2D array remains the ssame as there is only element.
+
+
+//Soln - java -8
+
+
+public class Solution {
+    public void solve(int[][] A) {
+        /*
+        *   Approach :- 
+        *   1.  To rotate a matrix in 90 degree's you just need to perform two steps
+                I.  Create transpose of it.
+                II. Reverse each array in the matrix
+        *   2. TC = O(N*M) || SC = O(1)
+        */
+        for(int i = 0; i < A.length; i++){
+            for(int j = 0; j <= i; j++){
+                int temp = A[i][j];
+                A[i][j] = A[j][i];
+                A[j][i] = temp;
+            }
+        }
+
+        for(int i = 0; i < A.length; i++){
+            for(int start = 0, end = A[i].length - 1; start < end; start++, end--){
+                int temp = A[i][start];
+                A[i][start] = A[i][end];
+                A[i][end] = temp;
+            }
+        }
+    }
+}
