@@ -1,0 +1,73 @@
+Problem Description
+
+Given two binary strings, return their sum (also a binary string).
+Example:
+
+a = "100"
+
+b = "11"
+Return a + b = "111".
+
+
+
+//Soln - java 8
+
+public class Solution {
+    public String addBinary(String A, String B) {
+        //Approach :-
+        //Create a stringbuilder to store the answer or result
+        StringBuilder sb = new StringBuilder();
+        //Two variables to store the carry values after addition and reminder after division
+        int carry = 0, rem = 0;
+        //In the first loop we will iterate over both the list in backword manner
+        int i = A.length()-1, j = B.length()-1;
+        while(i >= 0 && j >= 0){
+            //Get sum of last characters of string and carry store it in sum
+            //Note :- charAt() method returns aschii values so substract it with zero to 
+            //get actual value
+            int sum = (int)(A.charAt(i)-'0') + (int)(B.charAt(j)-'0') + carry;
+            //Take reminder by doing Mod 2 as it is a binary string
+            rem = sum % 2;
+            //Append it ti stringbuilder
+            sb.append(rem);
+            //Check if we get an carry for next addition by doing sun / 2
+            carry = sum / 2;
+            //decrement i and j
+            i--;
+            j--;
+        }
+
+        //If both strings are not of same length then we will remain with some char left for
+        //that againg check if i or j greater than or equal to 0 if not than again do same
+        //process as above
+        if(i >= 0){
+            while(i >= 0){
+                int sum = (int)(A.charAt(i)-'0') + carry;
+                rem = sum % 2;
+                sb.append(rem);
+                carry = sum / 2;
+                i--;
+            }
+        }
+
+        if(j >= 0){
+            while(j >= 0){
+                int sum = (int)(B.charAt(j)-'0') + carry;
+                rem = sum % 2;
+                sb.append(rem);
+                carry = sum / 2;
+                j--;
+            }
+        }
+
+        //In the last check where carry is greater than 0 or not 
+        //if yes than append carray to stringbuilder
+        if(carry > 0){
+                sb.append(carry);
+        }
+        //Finally reverse the stringbuilder and return the answer in string format
+        return sb.reverse().toString();
+
+        //TC = O(N) || SC = O(N)
+    }
+}

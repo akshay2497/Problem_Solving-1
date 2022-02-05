@@ -1,0 +1,58 @@
+Given a number A in the form of string. Check if the number is divisible by 8 or not.
+
+Return 1 if it is divisible by 8 else return 0.
+
+
+Input Format
+
+The only argument given is string A.
+Output Format
+
+Return 1 if it is divisible by 8 else return 0.
+
+Constraints
+
+1 <= length of the String <= 100000
+'0' <= A[i] <= '9'
+For Example
+
+Input 1:
+    A = "16"
+Output 1:
+    1
+
+Input 2:
+    A = "123"
+Output 2:
+    0
+
+
+//Soln - java-8
+
+
+public class Solution {
+    public int solve(String A) {
+        if(A.length() < 3){
+            if(Integer.parseInt(A) % 8 == 0)
+                return 1;
+            else
+                return 0;
+        }else{
+            /*
+            *   Since input number may be very large, we cannot use n % 8 to check if 
+                a number is divisible by 8 or not, especially in languages like C/C++. 
+                The idea is based on following fact.
+
+            *   A number is divisible by 8 if number formed by last three digits of 
+                it is divisible by 8.
+                == last * 10^0 + 2ndlast * 10^1 + 3rdLast * 10^2 == number
+            */
+            int number = 0;
+            for(int i = A.length()-1, j = 0; i >= A.length()-3;i--, j++){
+                number += (Integer.parseInt(Character.toString(A.charAt(i))) * Math.pow(10, j));
+            }
+            return number % 8 == 0 ? 1 : 0;
+        }
+        
+    }
+}

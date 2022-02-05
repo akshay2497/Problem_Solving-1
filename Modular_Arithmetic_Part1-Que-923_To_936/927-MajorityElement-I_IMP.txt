@@ -1,0 +1,44 @@
+Problem Description
+
+Given an array of size n, find the majority element. The majority element is the element that appears more than floor(n/2) times.
+You may assume that the array is non-empty and the majority element always exist in the array.
+
+Example :
+
+Input : [2, 1, 2]
+Return  : 2 which occurs 2 times which is greater than 3/2.
+
+
+//Soln - java 8
+
+
+public class Solution {
+    // DO NOT MODIFY THE ARGUMENTS WITH "final" PREFIX. IT IS READ ONLY
+    public int majorityElement(final int[] A) {
+        /*
+        *   Moore's Voting Algorithm    *
+        *   Lets say we find 2 elements x and y which are different in the array. 
+            If we removed those 2 elements, would the majority element change ?
+            arr[5] = {1,2,1,1,3} if we remove 1,2 then also majority element is 1
+        *   If we cancel out each occurrence of an element e with all the other elements 
+            that are different from e then e will exist till end if it is a majority 
+            element. Loop through each element and maintains a count of the element that 
+            has the potential of being the majority element. If next element is same then 
+            increments the count, otherwise decrements the count. If the count reaches 0 then 
+            update the potential index to the current element and reset count to 1.
+        *   TC = O(N) || SC = O(1)
+        */
+        int maj = 0, count = 0;
+        for(int i = 0; i < A.length; i++){
+            if(count == 0){
+                maj = A[i];
+                count++;
+            }else if(maj != A[i]){
+                count--;
+            }else if(maj ==  A[i]){
+                count++;
+            }
+        }
+        return maj;
+    }
+}

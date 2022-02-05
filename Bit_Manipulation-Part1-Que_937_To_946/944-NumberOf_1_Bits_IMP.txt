@@ -1,0 +1,63 @@
+Problem Description
+
+Write a function that takes an integer and returns the number of 1 bits it has.
+
+
+Problem Constraints
+
+1 <= A <= 109
+
+
+Input Format
+
+First and only argument contains integer A
+
+
+Output Format
+
+Return an integer as the answer
+
+
+Example Input
+
+Input1:
+11
+
+
+Example Output
+
+Output1:
+3
+
+
+Example Explanation
+
+Explaination1:
+11 is represented as 1011 in binary.
+
+
+//Soln - java 8
+
+
+public class Solution {
+    public int numSetBits(int A) {
+        //Approach :-   We know that after doing long division by two we get the Binary
+        //              Representation of number by placing reminders together
+        /*
+        *   1.  Get a count variable to count number of 1 bit's.
+        *   2.  Iterate through a loop till number becomes zero
+        *   3.  Check if number % 2 == 1 then that is 1 bit so increment count
+        *   4.  Make N = N / 2 to get the quotient and assign it to N again
+        *   5.  Finally return the count
+        *   6.  TC = O(logN) || SC = O(1)
+        */
+        int count = 0;
+        int N = A;
+        while(N != 0){
+            if(N % 2 == 1)
+                count++;
+            N = N / 2;
+        }
+        return count;
+    }
+}

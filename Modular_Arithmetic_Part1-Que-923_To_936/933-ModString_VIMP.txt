@@ -1,0 +1,114 @@
+Problem Description
+You are given a huge number in the form of a string A where each character denotes a digit of the number.
+You are also given a number B. You have to find out the value of A % B and return it.
+
+
+
+Problem Constraints
+1 <= A.size() <= 105
+0 <= Ai <= 9
+1 <= B <= 109
+
+
+Input Format
+The first argument is the string A.
+The second argument is the integer B.
+
+
+Output Format
+Return a single integer denoting the value of A % B.
+
+
+Example Input
+Input 1:
+A = "143"
+B = 2
+Input 2:
+
+A = "43535321"
+B = 47
+
+
+Example Output
+Output 1:
+1
+Output 2:
+
+20
+
+
+Example Explanation
+Explanation 1:
+143 is an odd number so 143 % 2 = 1.
+Explanation 2:
+
+43535321 % 47 = 20
+
+
+//Soln - java-8
+
+
+public class Solution {
+    public int findMod(String A, int B) {
+        /*
+        *   Optimized solution :-
+        *   1.  If we iterate over the string in reverse order then the last char will be
+                (Char[N-1] * 10^0) than next will be (char[N-2] * 10^1) than (char[N-3] * 10^2)
+                so second last element is going to be (char[N-2]*10^1) so we can write it Like
+                (char[N-2]*10^1) = (char[N-2]*(10 * 10^0)) similarly for 3rd last be like
+                (char[N-3]*10^2) = (char[N-3]*(10 * 10^1)) and so on
+            2.  So the idea here is to maintain the power to minimize the redundent task
+            3.  we will take a variable and store "r = 1" which is nothing but 10^0
+            4.  And in each iteration multiply r by 10 and mod it by B = r = (r * 10)% B
+            5.  This will cut down our complexity from O(N^2) to O(N).
+            6.  TC = O(N) || SC = O(1)
+        */
+        long ans = 0;
+        long r = 1;
+        int N = A.length();
+        for(int i = N-1; i >= 0; i--){
+            ans = ((ans % B) + (((A.charAt(i) - '0') % B) * (r % B))) % B;
+            r = (r * 10) % B;
+        }
+        return (int) ans;
+
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        /*
+        *   Brute Force solution
+        //Taking variable to store answer
+        long ans = 0;
+        //Storing length of string
+        long N = A.length();
+        //Traverse loop from 0 to N-1
+        for(int i = 0; i < N; i++){
+            //As we know that 10 % 2 = (1*10^1 + 0*10^0)%2 
+            //                       = (((1 % 2)*(10^1%2)) % 2 + ((0%2)*(10^0%2)) % 2) % 2
+            //Like above equation we can break our answer into parts and then we will solve
+            //Smaller problem
+            //But as we know that the string length will be 10^5 at max so it is really big no
+            //To break that into smaller parts we definrd a power function
+            //Finally we add ans and givent char % B and store it in ans
+            ans = ((ans % B) + (((A.charAt(i) - '0') % B) * (power(10, N-1-i, B)))) % B;
+        }
+        //Finally we return the answer in int format
+        //TC = O(N^2) :- cause for each outer loop itr we have N itr of inner power function
+        //SC = O(1)
+        //But due to time complexity we got TLE so we need to change the logic
+        return (int)ans;
+        */
+    }
+
+    //As power can be really big so to to make it compatible with datatypes we implemented 
+    //Power function with MOD B.
+    //TC = O(N) || SC = O(1)
+    public static long power(int a, long n, long p){
+        long ans = 1;
+        for(int i = 1; i <= n; i++){
+            //ans = (ans * a) % p.
+            //    = ((ans % p) * (a % p)) % p
+            ans = (ans % p * a % p) % p;
+        }
+        return ans;
+    }
+}

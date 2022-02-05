@@ -1,0 +1,102 @@
+Problem Description
+
+Given an integer array A, find if an integer p exists in the array such that the number of integers greater than p in the array equals to p.
+
+
+
+Input Format
+
+First and only argument is an integer array A.
+
+
+
+Output Format
+
+Return 1 if any such integer p is found else return -1.
+
+
+
+Example Input
+
+Input 1:
+
+ A = [3, 2, 1, 3]
+Input 2:
+
+ A = [1, 1, 3, 3]
+
+
+Example Output
+
+Output 1:
+
+ 1
+Output 2:
+
+ -1
+
+
+Example Explanation
+
+Explanation 1:
+
+ For integer 2, there are 2 greater elements in the array. So, return 1.
+Explanation 2:
+
+ There is no such integer exists.
+
+
+//Soln - java-8
+
+
+import java.util.*;
+public class Solution {
+    public int solve(ArrayList<Integer> A) {
+        /*
+        *   Approach :-
+        *   arr          = {-3,  0,  2,  2 , 5,  5,  5,  5, 8,  8, 10, 10, 10, 14}
+        *   actCount     =  13, 13, 10,  10, 6,  6,  6,  6, 4,  4,  1,  1,  1,  0
+        *   index        =   0,  1,  2,   3, 4,  5,  6,  7, 8,  9, 10, 11, 12, 13
+        *calCount=n-1-idx=  13, 12, 10,<-10, 6,<-6,<-6,<-6, 4,<-4,  1,<-1,<-1,  0
+        *   if you notice if array have repeatative elements for ex. in this Array
+            element 5 the count of elements greater than itself are same of each occurance 
+            of 5. and the count of ele greater than 5 is given by (n-1-index) for 
+            first occureance of 5 from the right. Same follows for each repetative element
+        */
+        //Sort the array
+        Collections.sort(A);
+        int n = A.size();
+        //this var will store how many Noble Integers present in the array
+        int num = 0;
+        //This var will maintain count of ele greter than curr element
+        int cnt = 0;
+        //We know that if the last element will be grestest ele in array after sorting
+        //so check if last element is equal to 0 if trure than increase num count and return 1.
+        if(A.get(n-1) == 0){
+            num++;
+            return 1;
+        }
+            
+        //Iterate over the loop in reverse order
+        for(int i = n-2; i >= 0; i--){
+            //Now check if curr element is not equal to prev ele then
+            //It means all ele after curr ele greater than it 
+            //So increase the count. 
+            if(A.get(i) != A.get(i+1)){
+                cnt = n-1-i;
+            }
+            //Check if count equal to current element then increase the num count 
+            //and return 1
+            if(cnt == A.get(i)){
+                num++;
+                return 1;
+            }
+               
+        }
+        //If we come out of loop that means no ele in array is Noble Integer
+        //Then return -1
+        return -1;
+
+        //TC = O(NlogN + N) = O(NlogN) || SC = O(1)
+    }
+}

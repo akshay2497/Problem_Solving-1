@@ -1,0 +1,89 @@
+Problem Description
+Given an array B of length A with elements 1 or 0. Find the number of subarrays with bitwise OR 1.
+
+
+Problem Constraints
+1 <= A <= 105
+
+
+Input Format
+The first argument is a single integer A.
+The second argument is an integer array B.
+
+
+Output Format
+Return the number of subarrays with bitwise array 1.
+
+
+Example Input
+Input 1:
+ A = 3
+B = [1, 0, 1]
+Input 2:
+ A = 2
+B = [1, 0]
+
+
+Example Output
+Output 1:
+5
+Output2:
+2
+
+
+Example Explanation
+Explanation 1:
+The subarrays are :- [1], [0], [1], [1, 0], [0, 1], [1, 0, 1]
+Except the subarray [0] all the other subarrays has a Bitwise OR = 1
+Explanation 2:
+The subarrays are :- [1], [0], [1, 0]
+Except the subarray [0] all the other subarrays has a Bitwise OR = 1
+
+
+//Soln - java - 8
+
+public class Solution {
+    public long solve(int A, int[] B) {
+        /*
+        *   Approach :- 
+            1. Find total number of Subarrays in given array
+            2. Find no of subarrays which has only 0 present in it.
+            3. Substract zeroContainSubarray from totSubarrays and return the answer.
+        */
+        //Count variable to store no of continous 0's.
+        int count = 0;
+        //long variable to store count of subarrays which has only 0's present
+        long zeroSubCount= 0;
+        //Iterate over array
+        for(int i = 0; i < B.length; i++){
+            //If curr ele is 0 than increment count.
+            if(B[i] == 0){
+                count++;
+            }
+            //If curr ele is not 0 then else block will execute
+            else{
+                //Check if count is greater than 0 that means subarray exists
+                //with only 0's.
+                if(count > 0){
+                    //Add the 0's subarray count into the variable using sum of natural no. 
+                    //formula
+                    zeroSubCount += ((long)count * (count + 1)) / 2;
+                    //Now the subarray count is added to variable so make count = 0
+                    count = 0;
+                }
+            }
+        }
+        //if last element of array is zero than it means the control is not gone into 
+        //above else block.
+        //so count those subarrays as well and stor the count 
+        if(count > 0)
+            zeroSubCount += ((long)count * (count + 1)) / 2;
+        //System.out.println(zeroSubCount);
+        //Count total no of subarrays
+        long totSubarrays = ((long)A * (A + 1)) / 2;
+        //Substract total subarrays which has only 0's from total no of subarrays
+        //and return the answer
+        return totSubarrays - zeroSubCount;
+        //TC = O(N) || SC = O(1)
+    }
+}

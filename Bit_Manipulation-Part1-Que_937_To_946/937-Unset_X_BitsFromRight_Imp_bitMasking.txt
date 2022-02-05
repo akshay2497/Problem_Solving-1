@@ -1,0 +1,72 @@
+Problem Description
+Given an integer A. Unset B bits from the right of A in binary.
+For eg:-
+A = 93, B = 4
+A in binary = 1011101
+A should become = 1010000 = 80. Therefore return 80.
+
+
+Problem Constraints
+1 <= A <= 1018
+1 <= B <= 60
+
+
+Input Format
+The first argument is a single integer A.
+The second argument is a single integer B.
+
+
+Output Format
+Return the number with B unset bits from the right.
+
+
+Example Input
+Input 1:-
+A = 25
+B = 3
+Input 2:-
+A = 37
+B = 3
+
+
+Example Output
+Output 1:-
+24
+Output 2:-
+32
+
+
+Example Explanation
+Explanation 1:-
+A = 11001 to 11000
+Explantio 2:-
+A = 100101 to 100000
+
+
+//Soln - java - 8
+
+
+public class Solution {
+    public Long solve(Long A, int B) {
+        /*
+        *   Approach :- 
+        *   1.  e.g let's say N = 29 and B = 3
+                N can be represented as N = 1 1 1 0 1 in binary to unset last 3 bits we need 
+                a mask loke          mask = 1 1 0 0 0 and use Mask & N.
+            2.  To create a mask loke that let's see a example if N = 3
+                Binary representation of 3 is  N = 0 0 0 1 1 if we use ~ operator on 3
+                                                i.e.    N = ~(0 0 0 1 1) then we get below results
+                all the bits get toggled and we will get N =  1 1 1 0 0
+            3.  Now let's consider N = 8 == 0 1 0 0 0 if we do N - 1 we will get
+                                            0 0 1 1 1 == 7 if you observe all bits to rightmost
+                                            set bit got toggled
+            4.  Now check if B = 3 if we do 2^3 then we get ans as 8 == 0 1 0 0 0 
+                if we do 2^3 - 1 we get 7 which is = 0 0 1 1 1 if we use ~(not) on 7
+                then we get ~(7) = ~(0 0 1 1 1) ==   1 1 0 0 0 this is the mask we need
+            5.  Simply use mask & N we will get the answer
+            6.  TC = O(1) || SC = O(1)
+        */
+        return ~(long)(Math.pow(2, B) -1) & A;
+        
+    }
+}

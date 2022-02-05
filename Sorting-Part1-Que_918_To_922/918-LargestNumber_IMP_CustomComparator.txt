@@ -1,0 +1,110 @@
+Problem Description
+
+Given a array A of non negative integers, arrange them such that they form the largest number.
+
+Note: The result may be very large, so you need to return a string instead of an integer.
+
+
+
+Problem Constraints
+
+1 <= len(A) <= 100000
+0 <= A[i] <= 2*109
+
+
+
+Input Format
+
+First argument is an array of integers.
+
+
+
+Output Format
+
+Return a string representing the largest number.
+
+
+
+Example Input
+
+Input 1:
+
+ A = [3, 30, 34, 5, 9]
+Input 2:
+
+ A = [2, 3, 9, 0]
+
+
+Example Output
+
+Output 1:
+
+ "9534330"
+Output 2:
+
+ "9320"
+
+
+Example Explanation
+
+Explanation 1:
+
+ A = [3, 30, 34, 5, 9]
+ Reorder the numbers to [9, 5, 34, 3, 30] to form the largest number.
+Explanation 2:
+
+ Reorder the numbers to [9, 3, 2, 0] to form the largest number 9320. 
+
+
+//Soln - java 8
+
+
+import java.util.*;
+public class Solution {
+    // DO NOT MODIFY THE LIST. IT IS READ ONLY
+    public String largestNumber(final List<Integer> A) {
+        //Creating our own arraylist and copy all values of existing arraylist
+        ArrayList<Integer> B = new ArrayList<>();
+        for(int i = 0; i < A.size(); i++){
+            B.add(A.get(i)); // -- TC = O(n) -- n is len of array
+        }
+        //Now we want to sort the arraylist
+        // arr = {3, 30, 34, 5, 9} we want to sort the array in such a way to get max largestNumber
+        // But if we use inbuilt sort function we will get O/P as arr = {3, 5, 9, 30, 34}
+        // And number will be 3430953 which is wrong correct answer is 9534330
+        // So to get correct answer we need to implement our own comparator
+        // which we can do by using lambda expression
+
+        // s1 = 30 s2 = 3 s3 = 303 s4 = 330
+        // We need to check the elements so best way is to form a string of them
+        // we know if we sort ele1 and ele2 either ele1 come before ele2 or vice versa
+        // take ele1 to s1 and ele2 to s2 and create both combinations
+        // s3 = s1 + s2 and s4 = s2 + s3 i.e. s3 = 303 ans s4 = 330
+        // as we know String implemented compareTo method which will ve-, 0 or ve+ value.
+        // Just use that method and return the answer 
+        // Note :- compareTo method in string compare each char's unicode value and compare
+        //         lexicographically if they are same goes to next char of each string
+        //         if we do s3.compareTo(s4) == 303.compareTo(330) 
+        //          1st itr = 3-3 =  0 goes to next ele.
+        //          2nd itr = 0-3 = -3 we got an negative answer it will return this answer
+        // s1 = 34 s2 = 30 s3 = 3430 s4 = 3034
+        B.sort((Integer ele1, Integer ele2) -> { // Sort TC = O(NlogN*1)
+            String s1 = ele1+"", s2 = ele2+"";
+            String s3 = s1 + s2, s4 = s2 + s1;
+            //System.out.println("s1 = "+s1+" s2 = "+s2+" s3 = "+s3+" s4 = "+s4);
+            return s3.compareTo(s4); // String Compare TC = O(1) 
+        });
+        //After sorting example array will look like = {30, 3, 34, 5, 9}
+        //B.forEach(System.out::print);
+        StringBuilder sb = new StringBuilder();
+        for(int i = B.size()-1; i >= 0; i--){
+            sb.append(B.get(i));  // -- TC = O(n) -- n is len of array
+        }
+        // Small Check if last element in array is 0 than that means all elements are 0
+        //then return "0"
+        if(B.get(B.size() - 1) == 0)
+            return "0";
+        return sb.toString();
+        //TC = O(NlogN) || SC = O(N)
+    }
+}
