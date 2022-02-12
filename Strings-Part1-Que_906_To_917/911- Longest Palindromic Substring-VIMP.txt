@@ -1,0 +1,101 @@
+Problem Description
+
+Given a string A of size N, find and return the longest palindromic substring in A.
+
+Substring of string A is A[i...j] where 0 <= i <= j < len(A)
+
+Palindrome string:
+A string which reads the same backwards. More formally, A is palindrome if reverse(A) = A.
+
+Incase of conflict, return the substring which occurs first ( with the least starting index).
+
+
+
+Problem Constraints
+
+1 <= N <= 10000
+
+
+
+Input Format
+
+First and only argument is a string A.
+
+
+
+Output Format
+
+Return a string denoting the longest palindromic substring of string A.
+
+
+
+Example Input
+
+A = "aaaabaaa"
+
+
+Example Output
+
+"aaabaaa"
+
+
+Example Explanation
+
+We can see that longest palindromic substring is of length 7 and the string is "aaabaaa".
+
+
+//Java 8
+
+
+public class Solution {
+    public String longestPalindrome(String A) {
+        /*
+        Approach, O(N2) time and O(1) space:
+        *   We observe that a palindrome mirrors around its center. Therefore, a 
+            palindrome can be expanded from its center, and there are only 2N-1 
+            such centers.
+        *   You might be asking why there are 2N-1 but not N centers?
+        *   The reason is that the center of a palindrome can be in between two letters.
+        *   Such palindromes have even number of letters (such as “abba”) and their center 
+            are between the two ‘b’s.
+        *   Since expanding a palindrome around its center could take O(N) time, the overall
+            complexity is O(N^2).
+        */
+        //Take two vre start and end to maintain start and end points of longest palindrome substr.
+        int start = 0, end = 0;
+        //Iterate over the String
+        for(int i = 0; i < A.length(); i++){
+            //Find len of palindromic substr which has odd no of char
+            int len1 = expandCenter(A, i, i);
+            //Find len of palindromic substr which has even no of char
+            int len2 = expandCenter(A, i, i+1);
+            
+            //Find max length between both of them
+            int len = Math.max(len1, len2);
+            //Now check if curr found len is greater then previously found len then we need to update the 
+            //start and end of largest palindromic string
+            if(len > end - start + 1){
+                //we can get the start index by substracting (len-1)/2 from middle index
+                start = i - (len-1)/2;
+                //We can get end index by adding len/2 to moddle index 
+                end = i + len/2;
+            
+        }
+        //Finally return the substring from strat to end
+        return A.substring(start, end + 1);
+    }
+    //Method to find len of palindromic substr
+    public static int expandCenter(String s, int left, int right){
+        //as we have left,right which are nothing but centers of substr iterate over the 
+        //given string till left >= 0, and right < N and charat left == charat right
+        //do left-- and right++
+        while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)){
+            left--;
+            right++;
+        }
+        //At end of this loop we can say that either charat left != charat right thats why we came out
+        //or any of the one end is exhausted or both are exhausted
+        //So the leght would be total len - 2 == right - left - 1
+        return right - left - 1;
+    }
+}

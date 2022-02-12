@@ -1,0 +1,75 @@
+Problem Description
+
+Akash likes playing with strings. One day he thought of applying following operations on the string in the given order:
+
+Concatenate the string with itself.
+Delete all the uppercase letters.
+Replace each vowel with '#'.
+You are given a string A of size N consisting of lowercase and uppercase alphabets. Return the resultant string after applying the above operations.
+
+NOTE: 'a' , 'e' , 'i' , 'o' , 'u' are defined as vowels.
+
+
+
+Problem Constraints
+
+1<=N<=100000
+
+
+Input Format
+
+First argument is a string A of size N.
+
+
+
+Output Format
+
+Return the resultant string.
+
+
+
+Example Input
+
+A="AbcaZeoB"
+
+
+
+Example Output
+
+"bc###bc###"
+
+
+
+Example Explanation
+
+First concatenate the string with itself so string A becomes "AbcaZeoBAbcaZeoB".
+Delete all the uppercase letters so string A becomes "bcaeobcaeo".
+Now replace vowel with '#'.
+A becomes "bc###bc###".
+
+
+//Java - 8
+
+public class Solution {
+    public String solve(String A) {
+        StringBuilder sb = new StringBuilder(A+A);
+        StringBuilder sbans = new StringBuilder();
+        for(int i = 0; i < sb.length(); i++){
+            if(sb.charAt(i) >= 'A' && sb.charAt(i) <= 'Z')
+                continue;
+            else
+                sbans.append(sb.charAt(i));
+                
+        }
+
+        for(int i = 0; i < sbans.length(); i++){
+            char temp = sbans.charAt(i);
+            if(temp == 'a' || temp == 'e' || temp == 'i' || temp == 'o' || temp == 'u' ||
+               temp == 'A' || temp == 'E' || temp == 'I' || temp == 'O' || temp == 'U'){
+                   sbans.setCharAt(i, '#');
+            }
+        }
+
+        return sbans.toString();
+    }
+}
