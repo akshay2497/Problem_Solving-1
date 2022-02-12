@@ -1,0 +1,51 @@
+Problem Description
+
+Given an array of integers, find two numbers such that they add up to a specific target number.
+
+The function twoSum should return indices of the two numbers such that they add up to the target, 
+where index1 < index2. Please note that your returned answers (both index1 and index2 ) are not zero-based. 
+Put both these numbers in order in an array and return the array from your function ( Looking at the function 
+signature will make things clearer ). Note that, if no pair exists, return empty list.
+
+If multiple solutions exist, output the one where index2 is minimum. If there are multiple solutions with 
+the minimum index2, choose the one with minimum index1 out of them.
+
+Input: [2, 7, 11, 15], target=9
+Output: index1 = 1, index2 = 2
+
+//Java - 8 
+
+
+public class Solution {
+    // DO NOT MODIFY THE LIST. IT IS READ ONLY
+    public ArrayList<Integer> twoSum(final List<Integer> A, int B) {
+        //Approach :-
+        //We need to return indices of the elements whose sum == B and indices should
+        //within given problem constraints
+        //So we use hashmap to store the distint elements and their index position
+        //where they appeared first
+        HashMap<Integer, Integer> mp = new HashMap<>();
+        //Arraylist to store answers
+        ArrayList<Integer> ans = new ArrayList<>();
+        //Iterate over the List
+        //Observation :- A[i]+A[j] = B so we can say that B-A[i] = A[j]
+        //Approach is simple iterate over the list for each element check x is present 
+        //in the map or not i.e. x = B-A[i] if yes return the index of x and current index+1
+        //else add x into map but check if x is alredy present in the map or not if already
+        //present don't add it into map because we need the lower index
+        for(int i = 0; i < A.size(); i++){
+            int x = B - A.get(i);
+            if(mp.containsKey(x)){
+                ans.add(mp.get(x));
+                ans.add(i+1);
+                return ans;
+            }else{
+                if(!mp.containsKey(A.get(i)))
+                    mp.put(A.get(i), i+1);
+            }
+        }
+        //Finally if no such pair exists return empty list
+        return ans;
+        //TC = O(N) || SC = O(N)
+    }
+}

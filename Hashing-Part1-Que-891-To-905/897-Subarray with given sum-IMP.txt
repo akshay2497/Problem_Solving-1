@@ -1,0 +1,111 @@
+Problem Description
+
+Given an array of positive integers A and an integer B, find and return first continuous subarray which adds to B.
+
+If the answer does not exist return an array with a single element "-1".
+
+First sub-array means the sub-array for which starting index in minimum.
+
+
+
+Problem Constraints
+
+1 <= length of the array <= 100000
+1 <= A[i] <= 109
+1 <= B <= 109
+
+
+
+Input Format
+
+The first argument given is the integer array A.
+
+The second argument given is integer B.
+
+
+
+Output Format
+
+Return the first continuous sub-array which adds to B and if the answer does not exist return an array with a single element "-1".
+
+
+
+Example Input
+
+Input 1:
+
+ A = [1, 2, 3, 4, 5]
+ B = 5
+Input 2:
+
+ A = [5, 10, 20, 100, 105]
+ B = 110
+
+
+Example Output
+
+Output 1:
+
+ [2, 3]
+Output 2:
+
+ -1
+
+
+Example Explanation
+
+Explanation 1:
+
+ [2, 3] sums up to 5.
+Explanation 2:
+
+ No subarray sums up to required number.
+
+//Java - 8
+
+public class Solution {
+    public ArrayList<Integer> solve(ArrayList<Integer> A, int B) {
+        //Creating prefix array
+        ArrayList<Long> pf = new ArrayList<>();
+        pf.add((long)A.get(0));
+        for(int i = 1; i < A.size(); i++){
+            pf.add(A.get(i) + pf.get(i-1));
+        } 
+        
+        HashMap<Long, Integer> mp = new HashMap<>();
+        //Lets say if our pf sum at some point becomes == B so pf[i] - B == 0 so to handle
+        //this edge case we need to add 0 to the map with -1 index
+        mp.put(0l, -1);
+        int startindex = -1, endindex = -1;
+        for(int i = 0; i < A.size(); i++){
+            //x wiil store value we require to make subarray sum = B
+            long x =  pf.get(i) - B;
+            if(mp.containsKey(x)){
+                //if x is present then save startindex and endindex and break the loop
+                startindex = mp.get(x) + 1;
+                endindex = i;
+                break;
+            }else{
+                //if x is not present in the map then check if current ele is present in map
+                //if not present then store it and its index
+                if(!mp.containsKey(pf.get(i)))
+                    mp.put(pf.get(i), i);
+            }
+        }
+        //create array to return ans
+        ArrayList<Integer> ans = new ArrayList<>();
+        //check if startindex and endindex are modified if yes then add all ele between
+        //startindex and endindex into ans array 
+        if(startindex != -1 && endindex != -1){
+            for(int i = startindex; i <= endindex; i++){
+                ans.add(A.get(i));
+            }
+            //return populated ans array
+            return ans;
+        }
+        //if not then add -1 to ans array and return ans array
+        ans.add(-1);
+        return ans;
+        //TC = O(N) || SC = O(N)
+    }
+}

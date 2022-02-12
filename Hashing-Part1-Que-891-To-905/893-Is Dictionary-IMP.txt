@@ -1,0 +1,115 @@
+Problem Description
+
+In an alien language, surprisingly they also use english lowercase letters, but possibly in a different order. The order of the alphabet is some permutation of lowercase letters.
+
+Given an array of words A of size N written in the alien language, and the order of the alphabet denoted by string B of size 26, return 1 if and only if the given words are sorted lexicographicaly in this alien language else return 0.
+
+
+
+Problem Constraints
+
+1 <= N, length of each word <= 105
+
+Sum of length of all words <= 2 * 106
+
+
+
+Input Format
+
+First argument is a string array A of size N.
+
+Second argument is a string B of size 26 denoting the order.
+
+
+
+Output Format
+
+Return 1 if and only if the given words are sorted lexicographicaly in this alien language else return 0.
+
+
+
+Example Input
+
+Input 1:
+
+ A = ["hello", "scaler", "interviewbit"]
+ B = "adhbcfegskjlponmirqtxwuvzy"
+Input 2:
+
+ A = ["fine", "none", "no"]
+ B = "qwertyuiopasdfghjklzxcvbnm"
+
+
+Example Output
+
+Output 1:
+
+ 1
+Output 2:
+
+ 0
+
+
+Example Explanation
+
+Explanation 1:
+
+ The order shown in string B is: h < s < i for the given words. So return 1.
+Explanation 2:
+
+ "none" should be present after "no". Return 0.
+
+//Java - 8
+
+public class Solution {
+    public int solve(ArrayList<String> A, String B) {
+        //Creating hashmap and storing each character in alphabetical series for 
+        //given alien langauge ==> char, pos(pos in alpha series)
+        HashMap<Character, Integer> hm = new HashMap<>();
+        for(int i = 0; i < B.length(); i++){
+            hm.put(B.charAt(i), i+1);
+        }
+        //Now iterate over the string array
+        //The words are sorted lexicographically if and only if 
+        //adjacent words are. This is because order is 
+        //transitive: a <= b and b <= c implies a <= c.
+        for(int i = 0; i < A.size()-1; i++){
+            //Take min leng between curr word nad next word so that we can compare both
+            //of them till min length store min len in N
+            int N = Math.min(A.get(i).length(), A.get(i+1).length());
+            //f variable is a flag which will tell us wether two wors are sorted or not
+            int f = 0;
+            //System.out.println("N = "+N+" "+A.get(i)+" "+A.get(i+1));
+            for(int j = 0; j < N; j++){
+                //if char at jth pos in i'th ele > char at ith pos in i+1'th ele than we can 
+                //directly say the list is not sorted and return true
+                if(hm.get(A.get(i).charAt(j)) > hm.get(A.get(i+1).charAt(j)))
+                    return 0;
+                //if char at jth pos in i'th ele > char at ith pos in i+1'th ele than we can 
+                //say that current pair is sorted so change flag value to 1 and break the loop
+                //in next iteration we will checjk next pair
+                if(hm.get(A.get(i).charAt(j)) < hm.get(A.get(i+1).charAt(j))){
+                    f=1;
+                    break;
+                }
+            }
+            //If f == 1 means current pair is sorted so we can write continue stmt
+            //so the next line's of code not execute
+            if(f == 1)
+                continue;
+            //Take a case 1st word = "aman" and 2nd word = "am" as we ar taking min len in consideration
+            //while iterating in the loop we will find all char in word 2 are present in word 1
+            //so to sort lexicographically the word with min length should come first
+            //In our case "am" should come 1st
+            //For this we need to check condition 1'stWord.len should be smaller than 2'ndWord.len
+            //If this is false then we can say array is not sorted and return 0
+            if(A.get(i).length() > A.get(i+1).length())
+                return 0;
+        }
+        //If we come out of both loops then we can say that the array is sorted
+        //and we can return 1
+        return 1;
+
+        //TC = O(N^2) || SC = O(N)
+    }
+}

@@ -1,0 +1,85 @@
+Problem Description
+
+Given an integer array A of size N, find the first repeating element in it.
+
+We need to find the element that occurs more than once and whose index of first occurrence is smallest.
+
+If there is no repeating element, return -1.
+
+
+
+Problem Constraints
+
+1 <= N <= 105
+
+1 <= A[i] <= 109
+
+
+
+Input Format
+
+First and only argument is an integer array A of size N.
+
+
+
+Output Format
+
+Return an integer denoting the first repeating element.
+
+
+
+Example Input
+
+Input 1:
+
+ A = [10, 5, 3, 4, 3, 5, 6]
+Input 2:
+
+ A = [6, 10, 5, 4, 9, 120]
+
+
+Example Output
+
+Output 1:
+
+ 5
+Output 2:
+
+ -1
+
+
+Example Explanation
+
+Explanation 1:
+
+ 5 is the first element that repeats
+Explanation 2:
+
+ There is no repeating element, output -1
+
+//Java - 8
+
+
+public class Solution {
+    public int solve(ArrayList<Integer> A) {
+        //Approach :- Store array elements with their occurances in a map
+        HashMap<Integer, Integer> hm1 = new HashMap<>();
+        for(int i = 0; i < A.size(); i++){
+                if(hm1.containsKey(A.get(i))){
+                    hm1.put(A.get(i), (hm1.get(A.get(i)) + 1));
+                }else{
+                    hm1.put(A.get(i), 1);
+                }
+        }
+        //Now iterate over the array and check if occurances are greater than 1
+        //return that element
+        for(int i = 0; i < A.size(); i++){
+            if(hm1.get(A.get(i)) != null && hm1.get(A.get(i)) > 1)
+                return A.get(i);
+        }
+        //If all elements are appeared for only one time return -1
+        return -1;
+
+        //TC = O(N) || SC = O(N)
+    }
+}

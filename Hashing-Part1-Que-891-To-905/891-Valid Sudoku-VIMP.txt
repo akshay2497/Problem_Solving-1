@@ -1,0 +1,75 @@
+Determine if a Sudoku is valid, according Determine if a 9 x 9 Sudoku board is valid. Only the filled cells 
+need to be validated according to the following rules:
+
+Each row must contain the digits 1-9 without repetition.
+Each column must contain the digits 1-9 without repetition.
+Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+
+The Sudoku board could be partially filled, where empty cells are filled with the character '.'.
+
+The input corresponding to the above configuration :
+
+["53..7....", 
+ "6..195...", 
+ ".98....6.", 
+ "8...6...3", 
+ "4..8.3..1", 
+ "7...2...6", 
+ ".6....28.", 
+ "...419..5", 
+ "....8..79"]
+A partially filled sudoku which is valid.
+
+Note:
+
+A valid Sudoku board (partially filled) is not necessarily solvable. Only the filled cells need to be validated.
+Return 0 / 1 ( 0 for false, 1 for true ) for this problem
+
+//Java - 8
+
+public class Solution {
+    // DO NOT MODIFY THE ARGUMENTS WITH "final" PREFIX. IT IS READ ONLY
+    public int isValidSudoku(final String[] A) {
+        //Approach :- We need to iterate over the matrix first
+        for(int i = 0; i < 9; i++){
+            //Maintains distinct ele in row for this iteration
+            HashSet<Character> rowset = new HashSet<>();
+            //Maintains distinct ele in col for this iteration
+            HashSet<Character> colset = new HashSet<>();
+            //Maintains distinct ele in 3*3 grid for this iteration
+            HashSet<Character> grdset = new HashSet<>();
+            for(int j = 0; j < 9; j++){
+                //Here we check if ele at given index in row is valid ele i.e integer not '.' char
+                //And the ele is is not present in the set before if both result in 
+                //true then our given condition is not fulfilled i.e. duplicate is present
+                //so we return 0 from here
+                if(A[i].charAt(j) != '.' && !rowset.add(A[i].charAt(j)))
+                    return 0;
+                //Here we check if ele at given index in col is valid ele i.e integer not '.' char
+                //And the ele is is not present in the set before if both result in 
+                //true then our given condition is not fulfilled i.e. duplicate is present
+                //so we return 0 from here
+                if(A[j].charAt(i) != '.' && !colset.add(A[j].charAt(i)))
+                    return 0;
+                //Now to we need to check the third condition i.e. duplicate ele should not
+                //present in 3*3 grid
+                //For this we will take 4 variables for maintaining grid boundries
+                //as per the given problem steatment we form the boundries
+                int rowstart = (i/3) * 3;
+                int colstart = (i%3) * 3;
+                int grdI = rowstart + (j/3);
+                int grdJ = colstart + (j%3);
+                //Here we check if ele at given index in grid is valid ele i.e integer not '.' char
+                //And the ele is is not present in the set before if both result in 
+                //true then our given condition is not fulfilled i.e. duplicate is present
+                //so we return 0 from here
+                if(A[grdI].charAt(grdJ) != '.' && !grdset.add(A[grdI].charAt(grdJ)))
+                    return 0;
+            }
+        }
+        //If we come out of the loop that means all conditions are satisfied and 
+        //sudoku is valid so return 1
+        return 1;
+        //TC = O(9*9) == Constant || SC = O(9+9+9) == Constant
+    }
+}
