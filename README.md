@@ -1,4 +1,4 @@
-# Problem_Solving
+# DSA-Problem_Solving
 # InterviewBit - Problem's with Solutions
 Hi Visitor,
 
